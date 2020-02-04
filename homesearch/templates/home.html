@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col" id="findhome">
+      <h2 style="color:#ffffff;text-align:center;">A home changes everything.</h2>
+      <h6 style="color:#ffffff;text-align:center;">Discover the place you'll love.</h6>
+      <div class="input-group mx-auto">
+          <input id="search" type="text" class="form-control" placeholder="Please enter City">
+          <div class="input-group-append">
+            <button class="btn btn-primary" onclick="getSearchValue()">
+              <i class="fa fa-search"></i>
+            </button>
+          </div>
+      </div>
+    </div>
+</div>
+{% endblock %}

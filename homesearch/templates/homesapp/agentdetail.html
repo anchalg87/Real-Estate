@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="row">
+      <div class="col-md-1"></div>
+      <div class="col-md-3">
+          <img class="rounded-circle" src="{{agent.agent_image.url}}" height="150" width="150"><br>
+          <i class="fa fa-phone" aria-hidden="true"></i> {{agent.agent_phone}}<br>
+          <a class="btn btn-primary" href="#"><i class="fa fa-envelope" aria-hidden="true"></i> Contact {{agent.user.first_name}}</a><br><br>
+          <div class="card">
+            <div class="card-body">
+                <p class="text-md-left">Agency: {{ agent.agency.agency_name }}</p>
+                <p class="text-md-left">Phone: {{ agent.agency.agency_phone }}</p>
+                <p class="text-md-left">Email: {{ agent.agency.agency_email }}</p>
+                <p class="text-md-left">Member Since: {{ agent.member_since }}</p>
+            </div>
+          </div>
+      </div>
+      <div class="col-md-1"></div>
+      <div class="col-md-6">
+          <h2>{{agent.user.first_name}} {{agent.user.last_name}}</h2>
+          <h6>Listing Agent</h6><br><br>
+          <font size="4"><b>About Us</b></font><br><br>
+          <p>{{agent.agent_desc}}</p>
+      </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <div class="media border p-3">
+            <img class="rounded-circle agent-img" src="{{ user.agent.agent_image.url }}">
+            <div class="media-body">
+                <h3>{{ user.username }} Profile
+                    <small class="text-muted">
+                        <a class="ml-4" href="{% url 'edit' %}">Edit</a>
+                    </small>
+                </h3>
+                <p class="text-md-left"><b>First Name:</b> {{ user.first_name }}</p>
+                <p class="text-md-left"><b>Last Name:</b> {{ user.last_name}}</p>
+                <p class="text-md-left"><b>Email:</b> {{ user.email }}</p>
+                <p class="text-md-left"><b>Phone:</b> {{ user.agent.agent_phone }}</p>
+                <p class="text-md-left"><b>Date of Birth:</b> {{ user.agent.date_of_birth }}</p>
+                <p class="text-md-left"><b>Member Since:</b> {{ user.agent.member_since }}</p>
+                <p class="text-md-left"><b>Real Estate Agency:</b> {{ user.agent.agency }}</p>
+                <p class="text-md-left"><b>Bio:</b> {{ user.agent.agent_desc }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

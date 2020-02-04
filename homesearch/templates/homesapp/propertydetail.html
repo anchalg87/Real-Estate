@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block content %}
+  <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-9">
+          <img src="{{property.prop_image.url}}" height="470" width="850">
+          <div class="row">
+              <div class="col-md-4">
+                  <font size="5"><b>{{property.prop_address1}}</b><br></font>
+                    {{property.prop_city}}, {{property.prop_state}} {{property.prop_zip}}<br>
+                      <b>Year built in:</b> {{property.year_built}}<br>
+                    <i class="fa fa-bed" aria-hidden="true"></i>  {{property.no_of_beds}} Beds
+                    <i class="fa fa-bath" aria-hidden="true"></i> {% if property.no_of_baths == 1 %} {{property.no_of_baths}} Bath {% else %} {{property.no_of_baths}} Baths {% endif %}
+                    <i class="fa fa-area-chart" aria-hidden="true"></i>  {{property.area|floatformat:"0"|intcomma}} sqft
+              </div>
+              <div class="col-md-2">
+                  <font size="5"><b>${{property.price|floatformat:"0"|intcomma}}</b><br></font>
+                  <img class="rounded-circle" src="{{property.agent.agent_image.url}}" height="40" width="40"> {{property.agent.user.first_name}} {{property.agent.user.last_name}}<br>
+                  <i class="fa fa-phone" aria-hidden="true"></i> {{property.agent.agent_phone}}
+                  <a class="btn btn-primary" href="#"><i class="fa fa-envelope" aria-hidden="true"></i> Contact {{property.agent.user.first_name}}</a>
+              </div>
+              <div class="col-md-4">
+                <!--map starts here -->
+                  <div id="map"></div>
+                    <script>
+                    <!--var geocoder = new google.maps.Geocoder();-->
+                    <!--var address = {{property.prop_address1}} + ", " + {{property.prop_city}} + ", " + {{property.prop_state}} + " " + {{property.prop_zip}};-->
+                    <!--alert(address);-->
+                    <!--geocoder.geocode( { 'address': address}, function(results, status) {-->
+
+                    <!--if (status == google.maps.GeocoderStatus.OK) {-->
+                        <!--var latitude = results[0].geometry.location.lat();-->
+                        <!--var longitude = results[0].geometry.location.lng();-->
+                        <!--alert(latitude);-->
+                        <!--}-->
+                    <!--});-->
+                      // Initialize and add the map
+                       function initMap() {
+                      // The location of property
+                      var property = {lat: 40.7128, lng: -74.0060};
+                      // The map, centered at property
+                      var map = new google.maps.Map(
+                          document.getElementById('map'), {zoom: 4, center: property});
+                      // The marker, positioned at property
+                      var marker = new google.maps.Marker({position: property, map: map});
+                    }
+                     </script>
+                     <!--Load the API from the specified URL
+                     * The async attribute allows the browser to render the page while the API loads
+                     * The key parameter will contain your own API key (which is not needed for this tutorial)
+                     * The callback parameter executes the initMap() function
+                     -->
+                     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCq5h8Y59MFgNHu_ltYnMdjTop9m4Dmppk&callback=initMap">
+                     </script>
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-md-9">
+                  <font size="4"><b>Description</b></font><br><br>
+                  <p>{{property.property_desc}}</p>
+              </div>
+          </div>
+      </div>
+  </div>
+{% endblock %}

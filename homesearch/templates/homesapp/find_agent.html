@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row search">
+    <div class="col-md-3 custom-col">
+        <input id="agent_city" type="text" class="form-control" placeholder="City">
+    </div>
+    <div class="col-md-3 custom-col">
+        <input id="agent_name" type="text" class="form-control" placeholder="Agent name">
+    </div>
+    <div class="col-md-3 custom-col">
+        <button id="search_agent" class="btn btn-primary">Search</button>
+    </div>
+</div>
+<div id="agents" class="row">
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+        {% for agent in object_list %}
+      <div class="card">
+          <div class="card-header bg-primary text-white">{{agent.user.first_name}} {{agent.user.last_name}}</div>
+              <div class="card-block">
+                  <div class="row">
+                    <div class="col-md-4">
+                      <img class="rounded-circle" src="{{agent.agent_image.url}}" height="150" width="150">
+                    </div>
+                    <div class="col-md-7">
+                      <table class="table">
+                        <tbody>
+                          <tr>
+                            <td>
+                              <label><b>Phone</b></label>
+                            </td>
+                            <td>
+                              {{agent.agent_phone}}
+                            </td>
+                          </tr>
+                           <tr>
+                            <td>
+                              <label><b>Email</b></label>
+                            </td>
+                            <td>
+                              {{agent.user.email}}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <label><b>Agency</b></label>
+                            </td>
+                            <td>
+                              {{agent.agency.agency_name}}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <label><b>Member Since</b></label>
+                            </td>
+                            <td>
+                              {{agent.member_since}}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
+                              {% if user.is_authenticated and user.id == agent.user.id %}
+                                 <td>
+                                  <a class="btn btn-primary" href="{% url 'myprofile' %}">Edit</a>
+                                  <a class="btn btn-primary" href="{% url 'agent-detail' agent.id %}">View Details</a>
+                                 </td>
+                              {% else %}
+                                 <td>
+                                  <a class="btn btn-primary" href="{% url 'agent-detail' agent.id %}">View Details</a>
+                                 </td>
+                              {% endif %}
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+          </div>
+      </div>
+        <br>
+        <br>
+        {% endfor %}
+        <div class="pagination">
+            {% if is_paginated %}
+
+              {% if page_obj.has_previous %}
+                <a class="btn btn-link mb-4" href="?page=1"><<</a>
+                <a class="btn btn-link mb-4" href="?page={{ page_obj.previous_page_number }}"><</a>
+              {% endif %}
+
+              {% for page in page_obj.paginator.page_range %}
+                {% if page_obj.number == page %}
+                  <a class="btn btn-link mb-4" href="?page={{ page }}">{{ page }}</a>
+                {% elif page > page_obj.number|add:'-3' and page < page_obj.number|add:'3' %}
+                  <a class="btn btn-link mb-4" href="?page={{ page }}">{{ page }}</a>
+                {% endif %}
+              {% endfor %}
+
+              {% if page_obj.has_next %}
+                <a class="btn btn-link mb-4" href="?page={{ page_obj.next_page_number }}">></a>
+                <a class="btn btn-link mb-4" href="?page={{ page_obj.paginator.num_pages }}">>></a>
+              {% endif %}
+
+            {% endif %}
+        </div>
+    </div>
+    <div class="col-md-1"></div>
+</div>
+{% endblock %}

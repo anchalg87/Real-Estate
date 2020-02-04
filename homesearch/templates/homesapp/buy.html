@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block content %}
+<div class="row search">
+    <div class="col-md-3 custom-col">
+        <input id="city" type="text" class="form-control" placeholder="City">
+    </div>
+    <div class="col-md-3 custom-col">
+        <select class="custom-select" id="proptype">
+            <option value="" selected disabled>Select Type</option>
+            <option value="apartment">Apartment Complex</option>
+            <option value="townhouse">Townhouse</option>
+            <option value="condo">Condo / Apartment Unit</option>
+            <option value="house">House</option>
+        </select>
+    </div>
+    <div class="col-md-2 custom-col">
+        <select class="custom-select" id="beds">
+            <option value="" selected disabled>No. of Beds</option>
+            <option value="one">1</option>
+            <option value="two">2</option>
+            <option value="three">3</option>
+            <option value="four">4</option>
+            <option value="five">5</option>
+        </select>
+    </div>
+    <div class="col-md-3 custom-col">
+        <button id="search_prop" class="btn btn-primary">Search</button>
+    </div>
+</div>
+<div id="properties" class="row">
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+        {% for prop in object_list %}
+      <div class="card">
+          <div class="card-header bg-primary text-white">{{prop.prop_address1}} - {{prop.property_type.prop_type}}</div>
+              <div class="card-block">
+                  <div class="row props">
+                    <div class="col-md-5">
+                      <img src="{{prop.prop_image.url}}" height="150" width="150">
+                    </div>
+                    <div class="col-md-6">
+                      <table class="table">
+                        <tbody>
+                          <tr>
+                            <td>
+                              <label><b>Area</b></label>
+                            </td>
+                            <td>
+                              {{prop.area|floatformat:"0"|intcomma}} sqft
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <label><b>Price</b></label>
+                            </td>
+                            <td>
+                              ${{prop.price|floatformat:"0"|intcomma}}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <label><b>No. of Beds</b></label>
+                            </td>
+                            <td>
+                              {{prop.no_of_beds}}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <label><b>Address</b></label>
+                            </td>
+                            <td>
+                              {{prop.prop_address1}}<br>{{prop.prop_city}}, {{prop.prop_state}} {{prop.prop_zip}}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                            </td>
+                              {% if user.is_authenticated and prop.agent.user.id == user.id %}
+                                <td>
+                                  <a class="btn btn-primary" href="{% url 'prop-update' prop.id %}">Edit</a>
+                                  <a class="btn btn-primary" href="{% url 'prop-delete' prop.id %}">Delete</a>
+                                </td>
+                                <td>
+                                  <a class="btn btn-primary" href="{% url 'prop-detail' prop.id %}">View Details</a>
+                                </td>
+                              {% else %}
+                                <td>
+                                </td>
+                                <td>
+                                  <a class="btn btn-primary" href="{% url 'prop-detail' prop.id %}">View Details</a>
+                                </td>
+                              {% endif %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+          </div>
+      </div>
+        <br>
+        <br>
+        {% endfor %}
+        <div class="pagination">
+            {% if is_paginated %}
+
+              {% if page_obj.has_previous %}
+                <a class="btn btn-link mb-4" href="?page=1"><<</a>
+                <a class="btn btn-link mb-4" href="?page={{ page_obj.previous_page_number }}"><</a>
+              {% endif %}
+
+              {% for page in page_obj.paginator.page_range %}
+                {% if page_obj.number == page %}
+                  <a class="btn btn-link mb-4" href="?page={{ page }}">{{ page }}</a>
+                {% elif page > page_obj.number|add:'-3' and page < page_obj.number|add:'3' %}
+                  <a class="btn btn-link mb-4" href="?page={{ page }}">{{ page }}</a>
+                {% endif %}
+              {% endfor %}
+
+              {% if page_obj.has_next %}
+                <a class="btn btn-link mb-4" href="?page={{ page_obj.next_page_number }}">></a>
+                <a class="btn btn-link mb-4" href="?page={{ page_obj.paginator.num_pages }}">>></a>
+              {% endif %}
+
+            {% endif %}
+        </div>
+    </div>
+    <div class="col-md-1"></div>
+</div>
+{% endblock %}

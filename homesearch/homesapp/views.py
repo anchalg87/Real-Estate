@@ -29,7 +29,7 @@ def contactus(request):
             from_email = form.cleaned_data['from_email']
             message = form.cleaned_data['message']
             try:
-                send_mail(subject, message, from_email, ['anchu.gupta@gmail.com'])
+                send_mail(subject, message, from_email, ['anchalg87@gmail.com'])
             except BadHeaderError:
                 return HttpResponse('Invalid header found.')
             messages.success(request, 'Thank you for contacting us!')
